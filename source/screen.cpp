@@ -1,6 +1,6 @@
+#include <screen.h>
 
-
-#include "screen.h"
+#include <gba_video.h>
 
 
 
@@ -15,27 +15,27 @@ Pixel Pixel_xy(u8 x, u8 y) {
 
 
 void screen_m3init() {
-    GBAVideo_SetMode(MODE_3 | BG2_ENABLE);
+    SetMode(MODE_3 | BG2_ENABLE);
 }
 
 void screen_m3setMemoryVideo(u16* buffer) {
     for (u16 i = 0, max = SCREEN_WIDTH * SCREEN_HEIGHT; i < max; i++) {
-        SCREEN_FRONT_BUFFER[i] = buffer[i];
+        ((u16*) MODE3_FB)[i] = buffer[i];
     }
 }
 
 u16 screen_m3getPixel(Pixel p) {
-    return SCREEN_FRONT_BUFFER[Pixel_toM3Index(p)];
+    return MODE3_FB[p.coord.y][p.coord.x];
 }
 
 void screen_m3clear(Color c) {
     for (u16 i = 0, max = SCREEN_WIDTH * SCREEN_HEIGHT; i < max; i++) {
-        SCREEN_FRONT_BUFFER[i] = (u16) c;
+        ((u16*) MODE3_FB)[i] = (u16) c;
     }
 }
 
 void screen_m3setPixel(Pixel p, Color c) {
-    SCREEN_FRONT_BUFFER[Pixel_toM3Index(p)] = (u16) c;
+    MODE3_FB[p.coord.y][p.coord.x] = (u16) c;
 }
 
 void screen_m3setPixel8(Pixel p8, Color c) {
@@ -49,7 +49,7 @@ void screen_m3strokeVLine(Pixel top, u8 length, Color c) {
     for (u16 i = Pixel_toM3Index(top), iEnd = i + length * SCREEN_WIDTH;
             i < iEnd;
             i += SCREEN_WIDTH) {
-        SCREEN_FRONT_BUFFER[i] = (u16) c;
+                ((u16*) MODE3_FB)[i] = (u16) c;
     }
 }
 
@@ -57,7 +57,7 @@ void screen_m3strokeHLine(Pixel left, u8 length, Color c) {
     for (u16 i = Pixel_toM3Index(left), iEnd = i + length;
             i < iEnd;
             i++) {
-        SCREEN_FRONT_BUFFER[i] = (u16) c;
+                ((u16*) MODE3_FB)[i] = (u16) c;
     }
 }
 

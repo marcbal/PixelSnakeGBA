@@ -1,10 +1,9 @@
+#include <snake.h>
+
+#include <buttons.h>
+#include <screen.h>
+
 #include <stdlib.h>
-#include "snake.h"
-
-
-
-#include "buttons.h"
-#include "screen.h"
 
 typedef struct {
 	u8 x;
@@ -24,11 +23,11 @@ typedef struct {
 } Snake;
 
 
-static void Snake_shift(Snake* this, Position newValue) {
-	for (int i = this->length + 1; i > 0; i--) {
-		this->tail[i] = this->tail[i-1];
+static void Snake_shift(Snake* snake, Position newValue) {
+	for (int i = snake->length + 1; i > 0; i--) {
+		snake->tail[i] = snake->tail[i-1];
 	}
-	this->tail[0] = newValue;
+	snake->tail[0] = newValue;
 }
 
 static CellState cells[GAME_X + GAME_WIDTH][GAME_Y + GAME_HEIGHT];
@@ -112,7 +111,7 @@ void snake_init() {
 
 static void game_input() {
 	// check input state
-	if (Button_getDown(BUTTON_START)) { // restart new game
+	if (Button_getDown(KEY_START)) { // restart new game
         if (gameEnd) {
 		    snake_init();
         }
@@ -121,18 +120,18 @@ static void game_input() {
         }
 	}
 
-    fast = Button_getState(BUTTON_A);
+    fast = Button_getState(KEY_A);
 
-	if (Button_getState(BUTTON_LEFT)) {
+	if (Button_getState(KEY_LEFT)) {
 		currentDirection = LEFT;
 	}
-	else if (Button_getState(BUTTON_RIGHT)) {
+	else if (Button_getState(KEY_RIGHT)) {
 		currentDirection = RIGHT;
 	}
-	else if (Button_getState(BUTTON_UP)) {
+	else if (Button_getState(KEY_UP)) {
 		currentDirection = TOP;
 	}
-	else if (Button_getState(BUTTON_DOWN)) {
+	else if (Button_getState(KEY_DOWN)) {
 		currentDirection = BOTTOM;
 	}
 }

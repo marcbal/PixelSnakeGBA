@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#include "gba.h"
+#include <gba_types.h>
 
 
 

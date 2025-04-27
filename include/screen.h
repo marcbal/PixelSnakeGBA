@@ -3,7 +3,7 @@
 #define SCREEN_H
 
 
-#include "gba.h"
+#include <gba_video.h>
 
 /*
     Colors
@@ -11,12 +11,12 @@
 
 typedef u16 Color;
 
-#define Color_rgb(r,g,b)   ((u16)(r | (g<<5) | (b<<10)))
+#define vsync() while(REG_VCOUNT != 160);
 
-#define WHITE Color_rgb(31, 31, 31)
-#define RED   Color_rgb(31, 0, 0)
-#define BLACK Color_rgb(0, 0, 0)
-#define GRAY Color_rgb(16, 16, 16)
+#define WHITE RGB5(31, 31, 31)
+#define RED   RGB5(31, 0, 0)
+#define BLACK RGB5(0, 0, 0)
+#define GRAY RGB5(16, 16, 16)
 
 /*
     Pixels
@@ -38,7 +38,7 @@ u16 Pixel_toM3Index(Pixel p);
 
 void screen_m3init();
 void screen_m3setMemoryVideo(u16* buffer);
-u16 screen_m3getPixel(Pixel p);
+u16  screen_m3getPixel(Pixel p);
 void screen_m3clear(Color c);
 void screen_m3setPixel(Pixel p, Color c);
 void screen_m3setPixel8(Pixel p8, Color c);

@@ -1,8 +1,6 @@
-/* hello.c - Gameboy Advance Tutorial - Loirak Development */
-
-#include "screen.h"
-#include "buttons.h"
-#include "snake.h"
+#include <screen.h>
+#include <buttons.h>
+#include <snake.h>
 
 
 u32 frame = 0; // runs at 60 Hz (around 16.67 ms)
@@ -13,11 +11,11 @@ int main() {
 
 	for(;;frame++) {
 		vsync();
-		Button_update(frame);
+		Button_update();
 
 		// key state
-		for (u8 i = 0; i < 10; i++) {
-			screen_m3setPixel(Pixel_xy(1 + i, 1), Button_getState(i) ? WHITE : GRAY);
+		for (u16 i = 0; i < 10; i++) {
+			screen_m3setPixel(Pixel_xy(1 + i, 1), Button_getState(1 << i) ? WHITE : GRAY);
 		}
 
 		// tick count

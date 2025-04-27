@@ -20,20 +20,20 @@ TARGET		:=	PixelSnake
 BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	
-INCLUDES	:=
+INCLUDES	:=  include
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-mthumb -mthumb-interwork
 
-CFLAGS	:=	-g -Wall -O3\
+CPPFLAGS :=	-g -Wall -O3\
 			-mcpu=arm7tdmi -mtune=arm7tdmi\
  			-fomit-frame-pointer\
 			-ffast-math \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE)
+CPPFLAGS	+=	$(INCLUDE)
 
 ASFLAGS	:=	$(ARCH)
 LDFLAGS	=	-g $(ARCH) -Wl,-Map,$(notdir $@).map
