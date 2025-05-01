@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/include/**",
                 "/opt/devkitpro/libgba/include",
-                "/opt/devkitpro/libtonc/include"
+                "/opt/devkitpro/libtonc/include",
+                "/opt/butano/butano/include"
             ],
             "defines": [],
             "compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc",

@@ -1,10 +1,10 @@
-#include <buttons.h>
-#include <screen.h>
+#include "buttons.h"
+#include "screen.h"
 
 #include <gba_interrupt.h>
 #include <gba_systemcalls.h>
 
-#include <stdlib.h> // for random
+#include <bn_random.h>
 
 
 
@@ -42,6 +42,12 @@ typedef enum {
     NONE, TOP, RIGHT, BOTTOM, LEFT
 } Direction;
 
+
+
+bn::random random;
+
+
+
 class Snake {
     public:
         Position tail[SNAKE_MAX_SIZE]; // 0 is head
@@ -49,8 +55,8 @@ class Snake {
 
         void reset() {
             length = 1;
-            tail[0].x = ((unsigned int)rand()) % GAME_WIDTH + GAME_X;
-            tail[0].y = ((unsigned int)rand()) % GAME_HEIGHT + GAME_Y;
+            tail[0].x = random.get_unbiased_int(GAME_WIDTH) + GAME_X;
+            tail[0].y = random.get_unbiased_int(GAME_HEIGHT) + GAME_Y;
         }
     
         void forward(Position nextPos, bool grow) {
@@ -80,6 +86,8 @@ class Game {
         u16 tickMod; // snake step when = 0
         
     public:
+
+
         void setCell(Position p, CellState state) {
             cells[p.x][p.y] = state;
             u16 c = (state == TAIL) ? WHITE :
@@ -104,8 +112,8 @@ class Game {
         void spawnFood() {
             Position food;
             do {
-                food.x = ((unsigned int)rand()) % GAME_WIDTH + GAME_X;
-                food.y = ((unsigned int)rand()) % GAME_HEIGHT + GAME_Y;
+                food.x = random.get_unbiased_int(GAME_WIDTH) + GAME_X;
+                food.y = random.get_unbiased_int(GAME_HEIGHT) + GAME_Y;
             } while (getCell(food) != EMPTY);
             setCell(food, FOOD);
         }

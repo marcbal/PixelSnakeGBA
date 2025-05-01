@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm
 
 ARG DEVKITPRO=/opt/devkitpro
 ENV DEVKITPRO=$DEVKITPRO
@@ -23,3 +23,14 @@ RUN ln -s /proc/mounts /etc/mtab && \
 # set devkitpro variables
 ARG DKP_TOOLS_PATH=$DEVKITPRO/tools/bin
 ENV DKP_TOOLS_PATH=$DKP_TOOLS_PATH
+
+# install butano
+
+RUN apt update && apt install -y \
+    python3 python-is-python3 \
+    && apt autoremove -y && apt clean && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/GValiente/butano.git /opt/butano
+
+ENV LIBBUTANO=/opt/butano
+
