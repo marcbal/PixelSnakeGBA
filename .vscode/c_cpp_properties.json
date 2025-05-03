@@ -10,8 +10,8 @@
             ],
             "defines": [],
             "compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc",
-            "cStandard": "c17",
-            "cppStandard": "gnu++17",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
             "intelliSenseMode": "linux-gcc-arm"
         }
     ],

@@ -1,9 +1,7 @@
-#include "buttons.h"
 #include "screen.h"
 
-#include <gba_interrupt.h>
-#include <gba_systemcalls.h>
-
+#include <bn_core.h>
+#include <bn_keypad.h>
 #include <bn_random.h>
 
 
@@ -130,11 +128,10 @@ class Game {
 
         
 
-        void handleInput() {	
-            Buttons::update();
+        void handleInput() {
 
             // check input state
-            if (Buttons::isHit(KEY_START)) {
+            if (bn::keypad::start_pressed()) {
                 if (gameEnd) { // restart new game
                     init();
                 }
@@ -143,18 +140,18 @@ class Game {
                 }
             }
 
-            fast = Buttons::isDown(KEY_A);
+            fast = bn::keypad::a_held();
 
-            if (Buttons::isDown(KEY_LEFT)) {
+            if (bn::keypad::left_held()) {
                 currentDirection = LEFT;
             }
-            else if (Buttons::isDown(KEY_RIGHT)) {
+            else if (bn::keypad::right_held()) {
                 currentDirection = RIGHT;
             }
-            else if (Buttons::isDown(KEY_UP)) {
+            else if (bn::keypad::up_held()) {
                 currentDirection = TOP;
             }
-            else if (Buttons::isDown(KEY_DOWN)) {
+            else if (bn::keypad::down_held()) {
                 currentDirection = BOTTOM;
             }
         }
@@ -254,13 +251,11 @@ static Game game;
 
 
 int main() {
+    bn::core::init();
     game.init();
-    
-    irqInit();
-    irqEnable(IRQ_VBLANK);
 
     for(;;) {
-        VBlankIntrWait();
+        bn::core::update();
         game.tick();
     }
 }
