@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/include/**",
+                "${workspaceFolder}/build/**",
                 "/opt/devkitpro/libgba/include",
                 "/opt/devkitpro/libtonc/include",
                 "/opt/butano/butano/include"
