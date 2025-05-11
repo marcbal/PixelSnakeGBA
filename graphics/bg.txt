@@ -1,0 +1,3 @@
+- small text font: Tahoma, 9pt, bold
+- digit font: Franklin Gothic Medium, 9pt, bold
+- Big text font: Verdana, 12pt, bold
