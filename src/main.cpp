@@ -5,6 +5,7 @@
 #include <bn_core.h>
 #include <bn_keypad.h>
 #include <bn_random.h>
+#include <bn_sram.h>
 #include <bn_string.h>
 
 
@@ -224,6 +225,33 @@ namespace bg {
     };
 }
 
+namespace save {
+    struct data {
+        static constexpr char magic_value_cstr[12] = "Pixel Snake";
+
+        bn::array<char, 12> magic_data;
+        int top_score;
+
+        void load() {
+            bn::sram::read(*this);
+            if (magic_data != bn::to_array(magic_value_cstr)) {
+                reset();
+            }
+        }
+        void save() {
+            bn::sram::write(*this);
+        }
+
+        void reset() {
+            magic_data = bn::to_array(magic_value_cstr);
+            top_score = 0;
+        }
+    };
+}
+
+
+
+
 
 
 
@@ -273,6 +301,8 @@ class Game {
         bg::game bgGame;
         bg::overlay bgOverlay;
 
+        save::data save_data;
+
         CellState cells[GAME_X + GAME_WIDTH][GAME_Y + GAME_HEIGHT];
         Direction fromDir[GAME_X + GAME_WIDTH][GAME_Y + GAME_HEIGHT];
         Direction toDir[GAME_X + GAME_WIDTH][GAME_Y + GAME_HEIGHT];
@@ -283,7 +313,7 @@ class Game {
         bool gameEnd;
         bool pause;
         bool fast;
-        uint16_t maxScore = 0;
+        uint16_t maxScore;
 
         uint32_t tickCount;
         uint16_t tickMod; // snake step when = 0
@@ -295,6 +325,9 @@ class Game {
             bgGame(),
             bgOverlay()
             {
+                save_data.load();
+                maxScore = save_data.top_score;
+
                 init();
                 updateVRAM();
             }
@@ -345,6 +378,8 @@ class Game {
             gameEnd = true;
             if (snake.length > maxScore) {
                 maxScore = snake.length;
+                save_data.top_score = maxScore;
+                save_data.save();
             }
             drawScores();
             bgOverlay.game_over();
